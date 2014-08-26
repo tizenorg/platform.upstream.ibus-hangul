@@ -1,10 +1,10 @@
 %define mod_path ibus-1.4
 Name:       ibus-hangul
 Version:    1.4.2
-Release:    1
+Release:    0
 Summary:    The Hangul engine for IBus input platform
-License:    GPLv2+
-Group:      System Environment/Libraries
+License:    GPL-2.0+
+Group:      System/Libraries
 URL:        http://code.google.com/p/ibus/
 Source0:    http://ibus.googlecode.com/files/%{name}-%{version}.tar.gz
 Source1001: ibus-hangul.manifest
@@ -26,27 +26,27 @@ libhangul.
 %setup -q
 cp %{SOURCE1001} .
 
-
 %build
 %configure --disable-static
 # make -C po update-gmo
-make %{?_smp_mflags}
+%__make %{?_smp_mflags}
 
 %install
-rm -rf $RPM_BUILD_ROOT
-make DESTDIR=${RPM_BUILD_ROOT} install
+rm -rf %{buildroot}
+%__make DESTDIR=%{buildroot} install
 
-rm -f ${RPM_BUILD_ROOT}%{_bindir}/ibus-setup-hangul
-sed -i 's!^Exec=ibus-setup-hangul!Exec=%{_libexecdir}/ibus-setup-hangul!' ${RPM_BUILD_ROOT}%{_datadir}/applications/ibus-setup-hangul.desktop
+rm -f %{buildroot}%{_bindir}/ibus-setup-hangul
+sed -i 's!^Exec=ibus-setup-hangul!Exec=%{_libexecdir}/ibus-setup-hangul!' %{buildroot}%{_datadir}/applications/ibus-setup-hangul.desktop
 
 %find_lang %{name}
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files -f %{name}.lang
 %manifest %{name}.manifest
-%doc AUTHORS COPYING README
+%license COPYING
+%doc AUTHORS README
 %{_libexecdir}/ibus-engine-hangul
 %{_libexecdir}/ibus-setup-hangul
 %{_datadir}/ibus-hangul
