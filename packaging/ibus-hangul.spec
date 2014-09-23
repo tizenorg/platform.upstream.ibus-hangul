@@ -15,6 +15,7 @@ BuildRequires:  libtool
 BuildRequires:  intltool
 BuildRequires:  pkgconfig(ibus-1.0)
 BuildRequires:  pkgconfig(libhangul)
+BuildRequires:  fdupes
 
 Requires:   ibus
 
@@ -33,12 +34,13 @@ cp %{SOURCE1001} .
 
 %install
 rm -rf %{buildroot}
-%__make DESTDIR=%{buildroot} install
+%make_install
 
 rm -f %{buildroot}%{_bindir}/ibus-setup-hangul
 sed -i 's!^Exec=ibus-setup-hangul!Exec=%{_libexecdir}/ibus-setup-hangul!' %{buildroot}%{_datadir}/applications/ibus-setup-hangul.desktop
 
 %find_lang %{name}
+%fdupes %{buildroot}
 
 %clean
 rm -rf %{buildroot}
@@ -54,3 +56,4 @@ rm -rf %{buildroot}
 %{_libdir}/ibus-hangul/setup/*
 %{_datadir}/applications/ibus-setup-hangul.desktop
 %{_datadir}/icons/hicolor/*/apps/*
+
